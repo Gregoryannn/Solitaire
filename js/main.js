@@ -1,14 +1,25 @@
 /*----- constants -----*/
-const suits = ['spades', 'hearts', 'clubs', 'diamonds'];
-const values = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K']
+const suits = ['s', 'h', 'c', 'd'];
+const values = ['A', '02', '03', '04', '05', '06', '07', '08', '09', '10', 'J', 'Q', 'K']
 
 
 /*----- app's state (variables) -----*/
 let winner;
+
+
+
 /*----- cached element references -----*/
+let newGame = true;
 let deck = [];
 let cardEls = [];
+let pile = [];
+let draw = [];
+let stacks = [[], [], [], [], [], [], []]
 
+
+
+
+/*----- cached element references -----*/
 const boardEls = {
     pile: document.getElementById('pile'),
     draw: document.getElementById('draw'),
@@ -24,23 +35,58 @@ const boardEls = {
     stack6: document.getElementById('stack6'),
     stack7: document.getElementById('stack7')
 }
+
+
+
+
 /*----- event listeners -----*/
+
+
+
 
 
 /*----- functions -----*/
 init();
 
 function init() {
+
     // make deck
     makeDeck();
+
     // shuffle deck
     shuffleDeck();
-    console.log(deck);
+
     // create card elements
-    createCardEls();
-    console.log(cardEls);
+
+
     // deal cards to game board
     dealCards();
+    render();
+}
+
+function render() {
+    // for each card on each pile, render them with the card back showing
+    // if it's the last card in the pile, render it with it's face up
+    stacks.forEach((stack, sIdx) => {
+        stack.forEach((card, cIdx) => {
+            let cardEl = document.createElement('div');
+            if (cIdx === stack.length - 1) {
+                cardEl.className = `card ${card.suit}${card.value}`
+            } else {
+                cardEl.className = `card back ${card.suit}${card.value}`
+            }
+            cardEl.style = `position: absolute; left: -7px; top: ${-7 + (cIdx * 7)}px;`
+            boardEls[`stack${sIdx + 1}`].appendChild(cardEl);
+        })
+    })
+    // render all cards in the pile face down
+    pile.forEach((card, cIdx) => {
+        let cardEl = document.createElement('div');
+        cardEl.className = `card back ${card.suit}${card.value}`
+        cardEl.style = `position: absolute; left: -7px; top: ${-7 + (cIdx * -.5)}px;`
+        boardEls.pile.appendChild(cardEl);
+    });
+
 }
 
 
@@ -59,16 +105,12 @@ function shuffleDeck() {
 }
 
 
-function createCardEls() {
-    let temp;
-    deck.forEach(card => {
-        temp = document.createElement('div');
-        temp.class = `${card.suit}${card.value}`;
-        cardEls.push(temp);
-    });
-}
-
 
 function dealCards() {
 
+    stacks.forEach((stack, idx) => {
+        for (let i = 0; i < idx + 1; i++)
+            stack.unshift(deck.shift());
+    });
+    pile = deck;
 }
