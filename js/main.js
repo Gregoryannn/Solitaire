@@ -4,7 +4,7 @@ const values = ['A', '02', '03', '04', '05', '06', '07', '08', '09', '10', 'J', 
 
 
 /*----- app's state (variables) -----*/
-let deck, deckReset, pile, draw, stacks, winner;
+let deck, pile, draw, stacks, winner;
 
 
 
@@ -38,9 +38,8 @@ document.querySelector('#pile').addEventListener('click', drawCard);
 init();
 
 function init() {
-
+    reset();
     deck = [];
-    deckReset = true;
     pile = [];
     draw = [];
     stacks = [[], [], [], [], [], [], []]
@@ -147,4 +146,15 @@ function drawCard() {
             boardEls.draw.removeChild(boardEls.draw.firstChild);
         }
     }
+
+}
+
+function reset() {
+    for (let boardEl in boardEls) {
+        while (boardEls[boardEl].firstChild) {
+            boardEls[boardEl].removeChild(boardEls[boardEl].firstChild);
+        }
+    }
+
+
 }
