@@ -4,7 +4,7 @@ const values = ['A', '02', '03', '04', '05', '06', '07', '08', '09', '10', 'J', 
 
 
 /*----- app's state (variables) -----*/
-let deck, pile, draw, stacks, aces, winner, clickedCard, firstStackId;
+let deck, pile, draw, stacks, aces, winner, clickedCard, firstStackId, cardArr;
 
 
 
@@ -42,6 +42,7 @@ function init() {
     deck = [];
     pile = [];
     draw = [];
+    cardArr = [];
     stacks = [[], [], [], [], [], [], []]
     stacksFaceUp = [1, 1, 1, 1, 1, 1, 1]
     aces = [[], [], [], []]
@@ -77,7 +78,7 @@ function render() {
                 }
                 faceUp--;
             }
-            cardEl.style = `position: absolute; left: -7px; top: ${-7 + (cIdx * 8)}px;`
+            cardEl.style = `position: absolute; left: -7px; top: ${-7 + (cIdx * 10)}px;`
             boardEls[`stack${sIdx + 1}`].appendChild(cardEl);
         })
     })
@@ -223,31 +224,42 @@ function getClickDestination(element) {
 function handleStackClick(element) {
 
     let stackId = getClickDestination(element).replace('stack', '') - 1;
+    let topCard = stacks[stackId][stacks[stackId].length - 1];
+    let stackPos;
      // select card to move
     if (!clickedCard && isFaceUpCard(element)) {
         firstStackId = stackId;
-        clickedCard = stacks[stackId].pop();
         element.className += ' highlight';
-        stacksFaceUp[stackId]--;
-        console.log(clickedCard)
-     // flip over unflipped card in stack
+        stackPos = getPositionInStack(element.parentNode.children);
+        clickedCard = stacks[stackId][stackPos];
+        let cardsToPush = stackPos - stacks[stackId].length;
+        while (cardsToPush < 0) {
+            cardArr.push(stacks[stackId].pop());
+            stacksFaceUp[stackId]--;
+            cardsToPush++;
+    }
+    // flip over unflipped card in stack
     } else if (!clickedCard && element === element.parentNode.lastChild) {
                 stacksFaceUp[stackId]++;
         render();
 
      // move card to stack destination
     } else if (clickedCard && isFaceUpCard(element)) {
-        // check if play is legal
-        if (isPlayLegal(clickedCard, stacks[stackId][stacks[stackId].length - 1])) {
-            stacks[stackId].push(clickedCard);
+        // allow clicks on first clicked card
+        if (stackId === firstStackId) {
+            while (cardArr.length > 0) {
+                stacks[stackId].push(cardArr.pop());
+                stacksFaceUp[stackId]++
+     }
             clickedCard = null;
-            stacksFaceUp[stackId]++;
             render();
-            // allow clicks on first clicked card
-      } else if (stackId === firstStackId) {
-            stacks[stackId].push(clickedCard);
+            // check if play is legal
+     } else if (true || isPlayLegal(clickedCard, topCard)) {
+            while (cardArr.length > 0) {
+                stacks[stackId].push(cardArr.pop());
+                stacksFaceUp[stackId]++;
+      }
             clickedCard = null;
-            stacksFaceUp[stackId]++
             render();
       }
         // move card to empty stack destination
@@ -271,8 +283,7 @@ function handleDrawClick() {
 
 
 function isEmptyStack(element) {
-    return element.parentNode.firstChild;
-
+    return !!element.id;
 }
 
 function isPlayLegal(card1, card2) {
@@ -326,3 +337,11 @@ function getCardValue(cardObjValue) {
         default: console.log('getCardValue is broken')
     }
 }
+
+    function getPositionInStack(HTMLCollection) {
+        for (let i = 0; i < HTMLCollection.length; i++) {
+            if (HTMLCollection[i].className.includes('highlight')) {
+                return i;
+            }
+        }
+    }
