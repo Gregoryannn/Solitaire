@@ -51,6 +51,7 @@
     .card.outline {
         background-image: none;
         background-color: rgba(0, 0, 0, 0.02);
+        cursor: default;
         border: 0.15em dashed rgba(59, 59, 59, 0.2);
     }
 
