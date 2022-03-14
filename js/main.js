@@ -254,7 +254,7 @@ function handleStackClick(element) {
             clickedCard = null;
             render();
             // check if play is legal
-     } else if (true || isPlayLegal(clickedCard, topCard)) {
+        } else if (isPlayLegal(clickedCard, topCard)) {
             while (cardArr.length > 0) {
                 stacks[stackId].push(cardArr.pop());
                 stacksFaceUp[stackId]++;
