@@ -18,8 +18,7 @@ const values = ['A', '02', '03', '04', '05', '06', '07', '08', '09', '10', 'J', 
 
 /*----- app's state (variables) -----*/
 let deck, pile, draw, stacks, aces, winner, clickedCard, firstClickDest, firstStackId,
-cardArr, secondsPlayed, counter, boardScore, totalScore, drawCycles;
-
+    cardArr, secondsPlayed, counter, boardScore, totalScore, drawCycles, clickCount;
 
 /*----- cached element references -----*/
 const boardEls = {
@@ -54,6 +53,7 @@ init();
 
 function init() {
     stopTimer();
+    clickCount = 0;
     reset();
     deck = [];
     pile = [];
@@ -97,7 +97,7 @@ function render() {
                 }
                 faceUp--;
             }
-            cardEl.style = `position: absolute; left: -7px; top: ${-7 + (cIdx * 10)}px;`
+            cardEl.style = `position: absolute; left: -7px; top: ${-7 + (cIdx * 15)}px;`
             boardEls[`stack${sIdx + 1}`].appendChild(cardEl);
         })
     })
@@ -232,6 +232,9 @@ function handleClick(evt) {
  }
 
 
+
+
+
 function handleStackClick(element) {
 
     let stackId = getClickDestination(element).replace('stack', '') - 1;
@@ -273,7 +276,6 @@ function handleStackClick(element) {
                 stacksFaceUp[stackId]++;
             }
             if (firstStackId === 'draw') boardScore += 5;
-            console.log(firstClickDest)
             if (firstClickDest.includes('ace')) boardScore -= 5;
             clickedCard = null;
             render();
@@ -293,6 +295,9 @@ function handleStackClick(element) {
        // card destination can be itself
     }
 }
+
+
+
 
 function handleAceClick(element) {
     let aceId = getClickDestination(element).replace('ace', '') - 1;
@@ -330,6 +335,12 @@ function handleAceClick(element) {
     }
 }
 
+
+function handleAceDoubleClick(element) {
+
+}
+
+
 function handleDrawClick(element) {
     let topCard = draw[draw.length - 1];
     let topCardEl = boardEls.draw.lastChild;
@@ -346,15 +357,41 @@ function handleDrawClick(element) {
             cardArr.push(draw.pop());
             cardsToPush++;
         }
-    } else if (topCardEl.className.includes('highlight') && getClickDestination(element) === 'draw') {
 
+    } else if (!isEmptyStack(element) && topCardEl.className.includes('highlight') && getClickDestination(element) === 'draw') {
         while (cardArr.length > 0) {
             draw.push(cardArr.pop());
         }
+
         clickedCard = null;
         render();
     }
 }
+
+
+
+function isDoubleClick() {
+    clickCount++;
+    if (clickCount === 1) {
+        singleClickTimer = setTimeout(function () {
+            clickCount = 0;
+            return false;
+        }, 400);
+    } else if (clickCount === 2) {
+        clearTimeout(singleClickTimer);
+        clickCount = 0;
+        return true;
+    }
+}
+
+
+
+
+
+function handleDrawDoubleClick(element) {
+
+}
+
 
 
 
