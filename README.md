@@ -1,4 +1,4 @@
-# Solitaire
+# Solitaire ♣️ ♥️ ♠️ ♣ 
 
 ## OBJECT OF THE GAME
 The first objective is to release and play into position certain cards to build up each foundation, in sequence and in suit, from the ace through the king. The ultimate objective is to build the whole pack onto the foundations, and if that can be done, the Solitaire game is won.
