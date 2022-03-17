@@ -1,8 +1,9 @@
-﻿@charset "UTF-8";
+﻿
+@charset "UTF-8";
 
 .card {
     box-sizing: border-box;
-    margin: 5px 5px 50px 5px;
+    margin: 5px 5px 5px 5px;
     cursor: pointer;
     /* Set the card's dimensions, and size it relative to
      it's font size. */
@@ -19,9 +20,6 @@
     background-size: contain;
     /* "Hide" any text within the element (use text to be
      simply compliant with screen readers, etc.). */
-   
-
-
     /* Default sizes for cards (size based off the font). */
     /* Optional styles for cards: borderless and drop shadow. */
     /* Not a card, but a card-shaped outline to represent a
@@ -390,6 +388,7 @@
     .card.back-red {
         background-image: url("../images/backs/red.svg");
     }
+
     /* Re-orients the cards for different directions. While
    they are symmetric, it's still important to orient
    them correctly in case text or other symbols are
