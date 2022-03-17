@@ -74,9 +74,21 @@ function init() {
 
 function render() {
     clearAllDivs();
+    renderStacks();
+    renderPile();
+    renderDraw();
+    renderAces();
+    getScore();
+    updateScore();
+    if (checkWinner()) {
+        clearInterval(counter);
+        document.querySelector('h1').textContent = 'You Win!';
+    }
+}
+
+function renderStacks() {
     let count, backs;
-    // for each card on each pile, render them with the card back showing
-    // render them face up if they are supposed to be face up
+
     stacks.forEach((stack, sIdx) => {
         count = 0;
         backs = 0;
@@ -106,26 +118,6 @@ function render() {
             boardEls[`stack${sIdx + 1}`].appendChild(cardEl);
         })
     })
-
-
-    // render all cards in the 'pile' face down
-    renderPile();
-
-    // render all cards in the 'draw' face up
-    renderDraw();
-    // render all cards in the 'ace' piles face up
-    renderAces();
-    // get and update the current score
-    getScore();
-    updateScore();
-    // check for winner
-
-
-    if (checkWinner()) {
-        clearInterval(counter);
-        document.querySelector('h1').textContent = 'You Win!';
-    }
-}
 
 
 
@@ -659,4 +651,15 @@ function handleStackDoubleClick(element) {
                 else {
                     return element.parentNode.id;
                 }
+    }
+
+
+    function winGame() {
+        aces.forEach(arr => {
+
+            for (let i = 0; i < 13; i++) {
+                arr.push(`fake card ${i + 1}`);
             }
+        })
+        render();
+    }
