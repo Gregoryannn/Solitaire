@@ -56,9 +56,22 @@ function init() {
     pile = [];
     draw = [];
     cardArr = [];
-    stacks = [[], [], [], [], [], [], []]
+    stacks = [
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        []
+    ]
     stacksFaceUp = [1, 1, 1, 1, 1, 1, 1]
-    aces = [[], [], [], []]
+    aces = [
+        [],
+        [],
+        [],
+        []
+    ]
     winner = null;
     clickedCard = null;
     secondsPlayed = null;
@@ -127,6 +140,7 @@ function renderPile() {
         boardEls.pile.appendChild(cardEl);
     });
 }
+
 function renderDraw() {
     draw.forEach((card, cIdx) => {
         let cardEl = document.createElement('div');
@@ -207,7 +221,7 @@ function clearAllDivs() {
 function isDoubleClick() {
     clickCount++;
     if (clickCount === 1) {
-        singleClickTimer = setTimeout(function () {
+        singleClickTimer = setTimeout(function() {
             clickCount = 0;
             return false;
         }, 300);
@@ -541,33 +555,47 @@ function getCardColor(cardObj) {
 
 function getCardValue(cardObj) {
     switch (cardObj.value) {
-        case 'A': return 1;
+        case 'A':
+            return 1;
             break;
-        case '02': return 2;
+        case '02':
+            return 2;
             break;
-        case '03': return 3;
+        case '03':
+            return 3;
             break;
-        case '04': return 4;
+        case '04':
+            return 4;
             break;
-        case '05': return 5;
+        case '05':
+            return 5;
             break;
-        case '06': return 6;
+        case '06':
+            return 6;
             break;
-        case '07': return 7;
+        case '07':
+            return 7;
             break;
-        case '08': return 8;
+        case '08':
+            return 8;
             break;
-        case '09': return 9;
+        case '09':
+            return 9;
             break;
-        case '10': return 10;
+        case '10':
+            return 10;
             break;
-        case 'J': return 11;
+        case 'J':
+            return 11;
             break;
-        case 'Q': return 12;
+        case 'Q':
+            return 12;
             break;
-        case 'K': return 13;
+        case 'K':
+            return 13;
             break;
-        default: console.log('getCardValue is broken')
+        default:
+            console.log('getCardValue is broken')
     }
 }
 
